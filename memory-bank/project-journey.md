@@ -20,8 +20,8 @@ To eliminate the friction and potential for human error in managing complex proj
 - [x] M05: **Framework/Ruleset Established:** The core memory bank files and AI rules have been populated.
 
 **Phase 2: Core Development**
-- [ ] M06: **Implement Core Script Logic:** Write the first complete, testable version of the `dls-commit-all.sh` script, including root-finding, submodule looping, and commit logic.
-- [ ] M07: **Implement Optional Push Flag:** Add and test the `--push` functionality.
+- [x] M06: **Implement Core Script Logic:** Write the first complete, testable version of the `dls-commit-all.sh` script, including root-finding, submodule looping, and commit logic.
+- [x] M07: **Implement Optional Push Flag:** Add and test the `--push` functionality.
 - [ ] M08: **Develop Installer Script:** Create `install.sh` to handle global installation.
 
 **Phase 3: Refinement & Testing**

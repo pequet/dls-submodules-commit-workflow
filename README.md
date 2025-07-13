@@ -17,21 +17,21 @@ The core of this repository is the `scripts/dls-commit-all.sh` script.
 3.  **Checks for Changes**: For each submodule, it safely checks if there are any staged or unstaged changes.
 4.  **Commits Submodule Changes**: If changes are found, it automatically stages all of them (`git add .`) and commits them using a provided or default commit message.
 5.  **Commits Parent Repository**: After all submodules are processed, it creates a final commit in the parent repository, which updates the submodule pointers to their new state.
-6.  **Optional Message**: It includes an optional `--message` flag to specify a custom commit message. When not provided, the script uses a default message (e.g. "CHORE: Automatic sync [dls-commit-all.sh]").
-7.  **Optional Push**: It includes an optional `--push` flag to push all committed changes (in the parent repo) to the remote origin.
+6.  **Optional Message**: It includes an optional `--message` flag to specify a custom commit message. When not provided, the script uses a default message (e.g. "CHORE: Automatic commit [dls-commit-all.sh]").
+7.  **Optional Push**: It includes an optional `--push` flag to push all committed changes (in the parent repo and submodules) to the remote origin.
 
 ### Usage
 
-Once installed, you can run the `dls-commit-all.sh` command from any directory.
+Once installed, you can run the `dls-commit-all.sh` command from any directory within your project.
 
 ```bash
 # Commit all changes with a custom message
-dls-commit-all.sh "My daily update"
+dls-commit-all.sh -m "My daily update"
 
 # Commit with a custom message and push to remote
-dls-commit-all.sh "My daily update" --push
+dls-commit-all.sh -m "My daily update" -p
 
-# Commit with the default "chore: Automatic sync" message
+# Commit with the default "chore: automatic commit" message
 dls-commit-all.sh
 ```
 

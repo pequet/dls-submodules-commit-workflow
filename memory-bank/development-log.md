@@ -33,6 +33,19 @@ Maintain this as a running history of the project. Add entries for any significa
 
 *   **Date:** 2025-07-13
 *   **Author(s):** Benjamin Pequet
+*   **Type:** Milestone
+*   **Summary:** Completed development of the first draft of the `dls-commit-all.sh` script, which is now ready for testing.
+*   **Details:**
+    *   The core script was developed to meet all documented requirements, including submodule iteration, parent repo commit, and optional push functionality.
+    *   The script's internal documentation, usage examples, and the project `README.md` have been aligned and finalized.
+*   **Outcome:**
+    *   The `dls-commit-all.sh` script is feature-complete and ready for the next phase of testing against a repository with submodules.
+*   **Relevant Files/Links:**
+    *   `scripts/dls-commit-all.sh`
+    *   `README.md`
+
+*   **Date:** 2025-07-13
+*   **Author(s):** Benjamin Pequet
 *   **Type:** Decision
 *   **Summary:** Refined project scope to include a simple installer and defer automation.
 *   **Details:**
@@ -48,7 +61,7 @@ Maintain this as a running history of the project. Add entries for any significa
     *   `README.md`
     *   `memory-bank/project-brief.md`
 
-)*   **Date:** 2025-07-13
+*   **Date:** 2025-07-13
 *   **Author(s):** Benjamin Pequet
 *   **Type:** Task
 *   **Summary:** Kicked off the project by systematically populating all Memory Bank files and drafting the `README.md`.
@@ -80,5 +93,3 @@ Maintain this as a running history of the project. Add entries for any significa
 *   **Relevant Files/Links:**
     *   `README.md`
     *   `memory-bank/`
-
----
