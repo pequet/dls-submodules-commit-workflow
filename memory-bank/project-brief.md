@@ -3,199 +3,88 @@ type: overview
 domain: system-state
 subject: DLS Commit Workflow
 status: active
-summary: Core project goals, requirements, and scope.
+summary: "Core project goals, requirements, and scope for the DLS Submodules Commit Workflow script."
 ---
-# Example: Project Brief
+# Project Brief
 
 ## 1. Project Goal
 
-*   **Primary Objective:** Clearly state the main goal of this project. What is the single most important thing it needs to achieve?
+*   **Primary Objective:** To create a robust script that completely automates the commit and push workflow for a parent repository and all of its Git submodules, eliminating a tedious and error-prone manual process.
 
-    * [Enter primary objective here]
-
-    *   **Example: Project A** The primary objective of this project is to provide a well-structured, AI-ready boilerplate for new projects in the Cursor IDE, enabling faster development cycles and consistent application of best practices.
-    *   **Example: Project B** To develop a suite of custom technical analysis indicators as Pine Script studies for the TradingView platform, focusing on code reusability, performance, and user-centric design.
-
-*   **Secondary Objectives (Optional):** List any other important goals.
-
-    * [Enter secondary objectives here]
-
-    *   **Example: Project A**
-        *   To demonstrate effective AI-assisted development workflows.
-        *   To provide a template that is easily customizable and adaptable to different project types.
-        *   To encourage the use of a structured memory system for improved project context and AI continuity.
-    *   **Example: Project B**
-        *   To create a reusable component library for common Pine Script tasks.
-        *   To establish a clear and maintainable documentation standard for each indicator.
-        *   To ensure all indicators are performant and have a minimal impact on chart responsiveness.
+*   **Secondary Objectives (Optional):**
+    *   To provide clear documentation on how to use the script.
+    *   To ensure the script is reliable and handles edge cases, such as submodules with no changes.
+    *   To make the script intelligent enough to always operate on the correct top-level repository.
 
 ## 2. Core Requirements & Functionality
 
-What must the project do at a minimum? List the essential features and functionalities.
+*   **Requirement 1:** Intelligently locate the top-level repository root, traversing up from the current directory.
+*   **Requirement 2:** Iterate through every submodule within the parent repository.
+*   **Requirement 3:** For each submodule, check for pending changes and, if found, add and commit them with a consistent message.
+*   **Requirement 4:** After processing all submodules, add and commit any changes in the main repository, including the updated submodule pointers.
+*   **Requirement 5:** Provide an optional `--push` flag to push all committed changes (submodules and parent) to the remote.
+*   **Requirement 6:** Include a simple installer script (`install.sh`) to make the main script globally executable via a symlink.
 
-*   **Requirement 1:** Provide a pre-configured directory structure.
-
-    * [Enter requirements here]
-
-    *   **Example: Project A** Includes directories for source code, documentation, memory bank, and archives.
-    *   **Example: Project B** Each indicator must be implemented as a functional Pine Script v5 study.
-
-*   **Requirement 2:** Integrate with AI tools and extensions.
-
-    * [Enter requirements here]
-
-    *   **Example: Project A** Includes `.cursor/rules` for AI behavior and integrates with `vibe-tools` for various tasks.
-    *   **Example: Project B** The suite must include a shared library of reusable functions.
-
-*   **Requirement 3:** Enforce coding standards and best practices.
-
-    * [Enter requirements here]
-
-    *   **Example: Project A** Includes an `run_main_script.sh` file for consistent code formatting.
-    *   **Example: Project B** Each indicator must have comprehensive Markdown documentation.
-
-*   **Requirement 4:** Document the project structure and development workflow.
-
-    * [Enter requirements here]
-
-    *   **Example: Project A** Includes `README.md` and `docs/` directory with detailed documentation.
-    *   **Example: Project B** All visual components must adhere to data visualization best practices.
-
-*   **Requirement 5:** Provide examples of AI-assisted development workflows.
-
-    * [Enter requirements here]
-
-    *   **Example: Project A** Include examples of using `vibe-tools` for code generation, documentation, and analysis.
-    *   **Example: Project B** All scripts must be optimized for performance.
+*   **Future Consideration:**
+    *   The installer could be enhanced to provide an option to set up a `launchd` agent for periodic, automated execution. This requires further evaluation to avoid potential conflicts in multi-user or multi-location workflows.
 
 ## 3. Target Audience
 
-Who is this project for? Describe the primary users.
-
-* [Enter target audience here]
-
-*   **Example: Project A** The target audience for this project is software developers, particularly those who are using the Cursor IDE and are interested in incorporating AI into their development workflow. This boilerplate is also suitable for teams looking to standardize their project setup and enforce coding standards.
-*   **Example: Project B** The target user is the discerning `Discretionary Trader` i.e. trader (from novice to experienced) who values rigor, transparency, and a deep understanding of their tools, rather than seeking simplistic "buy/sell" signals.
+Developers and teams who use Git submodules to manage complex projects and need to simplify their version control workflow.
 
 ## 4. Scope (Inclusions & Exclusions)
 
 ### In Scope:
 
-What features and tasks are definitely part of this project?
-
-* [Enter in scope here]
-
-*   **Example: Project A**
-    *   Pre-configured directory structure
-    *   Integration with AI tools and extensions
-    *   Coding standards and best practices
-    *   Documentation of the project structure and development workflow
-    *   Examples of AI-assisted development workflows
-    *   Memory bank system for improved project context and AI continuity
-*   **Example: Project B**
-    *   Pine Script implementation of indicators.
-    *   A reusable component library.
-    *   Technical documentation for each script.
-    *   A standardized framework for user-configurable inputs.
-    *   Performance profiling and optimization.
+*   A single, executable Bash script (`dls-commit-all.sh`).
+*   A simple, interactive installer script (`install.sh`) to handle global installation (symlinking).
+*   Functionality to commit changes in submodules and the parent repository.
+*   Optional push functionality.
+*   Robust error handling to prevent commits if a proper Git repository is not found.
+*   Comprehensive `README.md` documentation.
 
 ### Out of Scope:
 
-What features and tasks are explicitly NOT part of this project (at least for the initial version)?
-
-* [Enter out of scope here]
-
-*   **Example: Project A**
-    *   Specific application logic or domain-specific code
-    *   Database drivers or ORM integrations
-    *   Frontend frameworks or UI components
-    *   Deployment scripts or infrastructure configuration
-    *   Testing frameworks or test suites
-*   **Example: Project B**
-    *   The subscription website (this is Project C).
-    *   Backtesting against historical data (this is a separate, future project).
-    *   Real-time strategy execution or auto-trading bots.
-    *   Marketing materials or landing pages.
+*   Automated, periodic execution via `launchd` or `cron` is out of scope for the initial version pending further review of potential workflow conflicts.
+*   Any interactive user interface; this is a command-line tool.
+*   Support for version control systems other than Git.
+*   Complex git operations like rebase, merge, or cherry-pick. The script focuses solely on adding and committing existing changes.
+*   Language versions other than Bash.
 
 ## 5. Success Criteria & Key Performance Indicators (KPIs)
 
-How will you know if the project is successful? What metrics will you track?
-
-* [Enter success criteria here]
-
-*   **Example: Project A Criteria:**
-    *   **Criteria 1:** Ease of use
-    *   **Criteria 2:** Adoption rate
-    *   **Criteria 3:** Positive user feedback
-*   **Example: Project B Criteria:**
-    *   Code Quality & Maintainability
-    *   Documentation Clarity
-    *   Visualization Effectiveness
-
-* [Enter KPIs here]
-
-*   **Example: Project A KPIs:**
-    *   **KPI 1:** Time to first commit
-    *   **KPI 2:** Number of projects started from the boilerplate
-    *   **KPI 3:** User satisfaction score
-*   **Example: Project B KPIs:**
-    *   Number of reusable functions in the shared library.
-    *   Performance score (loading time) for each script.
-    *   Subjective clarity score based on user feedback for documentation and visuals.
+*   **Success Criteria:**
+    *   The script reliably commits all changes across submodules and the parent repo in a single command.
+    *   The script is easy to use and understand.
+    *   The script prevents common errors, like committing in the wrong directory.
+*   **KPIs:**
+    *   Time saved per developer during the commit process.
+    *   Reduction in commit-related errors (e.g., forgetting to commit a submodule).
+    *   Positive feedback from users on its utility and reliability.
 
 ## 6. Assumptions
 
-List any assumptions being made that could impact the project.
-
-* [Enter assumptions here]
-
-*   **Example: Project A Assumptions:**
-    *   Users are familiar with the Cursor IDE and basic software development concepts.
-    *   Users have access to the necessary API keys and accounts for AI tools and extensions.
-    *   Users are willing to adopt a structured development workflow and follow coding standards.
-*   **Example: Project B Assumptions:**
-    *   The mathematical models for the indicators are pre-defined and validated.
-    *   The target platform (TradingView) will maintain Pine Script v5 compatibility.
-    *   Users possess a basic understanding of technical analysis concepts.
+*   Users have a basic understanding of Git and Git submodules.
+*   Users are working in a Bash-compatible shell environment.
+*   The script will be executed from a directory within a Git repository.
 
 ## 7. Constraints & Risks
 
-Identify any limitations or potential problems.
-
-* [Enter constraints here]
-
-*   **Example: Project A Constraints:**
-    *   **Constraint 1:** Reliance on specific AI tools and extensions.
-    *   **Constraint 2:** Potential for redundancy in auto-generated rules.
-*   **Example: Project B Constraint:** The limitations of the Pine Script language (e.g., no external libraries, execution limits).
-
-* [Enter risks here]
-
-*   **Example: Project A Risks:**
-    *   **Risk 1:** Users may not be willing to adopt the structured development workflow. (Mitigation: Provide clear documentation and examples to demonstrate the benefits).
-    *   **Risk 2:** The boilerplate may become outdated quickly due to the rapid evolution of AI technologies. (Mitigation: Regularly update the boilerplate with new features and best practices).
-*   **Example: Project B Risks:**
-    *   **Risk 1:** Over-engineering the shared library, leading to unnecessary complexity. (Mitigation: Focus on creating components for clearly identified, repeated tasks only).
-    *   **Risk 2:** Performance degradation on complex indicators. (Mitigation: Implement performance profiling as a standard step in the development workflow for each script).
+*   **Constraints:**
+    *   The script is dependent on the `git` command-line tool being installed and available in the system's PATH.
+    *   It is designed only for Bash environments.
+*   **Risks:**
+    *   If the logic for finding the top-level repository is not robust, the script could perform Git operations in the wrong directory. (Mitigation: Use reliable git commands like `git rev-parse --show-superproject-working-tree` and `git rev-parse --show-toplevel`, and exit with an error if a valid root cannot be determined).
+    *   A very large number of submodules could potentially slow down the script's execution. (Mitigation: The `git submodule foreach` command is generally efficient, but performance should be kept in mind).
 
 ## 8. Stakeholders
 
-Who are the key people involved or affected by this project?
+*   **Project Sponsor:** Benjamin Pequet
+*   **Product Owner:** Benjamin Pequet
+*   **Development Team Lead:** N/A
+*   **Marketing Lead:** N/A
 
-* [Enter stakeholders here]
-
-*   **Example: Project A Stakeholders:**
-    *   **Project Sponsor:** Benjamin Pequet
-    *   **Product Owner:** Benjamin Pequet
-    *   **Development Team Lead:** N/A
-    *   **Marketing Lead:** N/A
-*   **Example: Project B Stakeholders:**
-    *   **Product Owner:** Benjamin Pequet
-    *   **Lead Developer:** Benjamin Pequet
-    *   **Development Team Lead:** N/A
-    *   **Marketing Lead:** N/A
-    
 ## Template Usage Notes
 
-This `projectbrief.md` file, along with others in the `memory-bank/` directory, serves as a foundational part of the Memory Bank methodology. This system helps AI assistants maintain context and understanding across development sessions when working on a project initiated from this template.
+This `project-brief.md` file, along with others in the `memory-bank/` directory, serves as a foundational part of the Memory Bank methodology. This system helps AI assistants maintain context and understanding across development sessions when working on a project initiated from this template.
 

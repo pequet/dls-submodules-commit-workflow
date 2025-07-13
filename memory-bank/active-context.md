@@ -3,36 +3,25 @@ type: overview
 domain: system-state
 subject: DLS Commit Workflow
 status: active
-summary: Current work focus, recent changes, and next steps.
+summary: "Current focus is on developing the core script after completing the initial documentation and planning phase."
 ---
 # Active Context
 
 ## Current Focus
-Describe the current focus of the project. What are the main tasks that need to be completed?
-
-* The project is currently in the initialization phase. The project structure is set up, but the memory bank is empty.
-
-*   **Example: Project A** Finalizing all documentation and completing pre-flight checks for the initial public release on GitHub.
-*   **Example: Project B** Developing the initial functions for the shared visualization library (`src/visualization`).
+The current focus is the core development of the `dls-commit-all.sh` script. The initial planning and documentation phase is complete, and the next step is to translate the requirements into functional Bash code.
 
 ## Recent Changes
-Describe the recent changes to the project. What has been completed recently?
-
-* Initialized the project from the boilerplate.
-
-*   **Example: Project A** Completed a full review of the memory bank files and their initialization protocols to ensure they are clear and effective for new users.
-*   **Example: Project B** Created the initial repository structure and defined the core mathematical model for the first indicator.
+*   The project was initialized from the boilerplate.
+*   All Memory Bank files have been populated with project-specific context based on user requirements from the `inbox`.
+*   A comprehensive `README.md` has been drafted.
+*   The overall project status, goals, and technical approach have been clearly defined.
 
 ## Next Steps
 
-*   Customize the boilerplate for the new project.
-*   Review the files in memory-bank and modify them to reflect the project's specific details.
-*   Configure the `vibe-tools` and other necessary tools.
-
-*   **Example: Project A**
-    *   Execute the final pre-flight checklist.
-    *   Publish the repository to GitHub as a public template.
-    *   Announce the release and begin gathering user feedback for future refinements.
-*   **Example: Project B**
-    *   Write and test the `plotLine()` and `colorZone()` functions for the visualization library.
-    *   Begin implementing the core logic for the first indicator using the new library functions.
+*   **Implement Core Script:** Begin writing the `dls-commit-all.sh` script in the `scripts/` directory.
+    *   Start with the logic to find the top-level repository root.
+    *   Implement the `git submodule foreach` loop.
+    *   Add the logic for checking, adding, and committing changes.
+    *   Implement the parent repository commit.
+    *   Add the optional `--push` functionality.
+*   **Test Continuously:** As development progresses, manually test the script against a test repository with submodules to ensure each piece of functionality works as expected.

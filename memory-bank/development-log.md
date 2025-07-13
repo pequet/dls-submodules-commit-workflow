@@ -29,7 +29,42 @@ Maintain this as a running history of the project. Add entries for any significa
 
 ---
 
-## Log Entries
+(## Log Entries
+
+*   **Date:** 2025-07-13
+*   **Author(s):** Benjamin Pequet
+*   **Type:** Decision
+*   **Summary:** Refined project scope to include a simple installer and defer automation.
+*   **Details:**
+    *   Based on a review of requirements, the project scope was clarified: an installer script is needed, but its sole purpose is to make the main script globally available (similar to the sibling `dls-icloud-backup-integrity` project).
+    *   The more complex feature of automated, periodic execution via `launchd` (similar to the sibling `dls-sync-drives` project) has been deferred as a future consideration due to potential workflow conflicts in multi-user environments.
+    *   A new, simpler `install.sh` was created, using the `dls-icloud-backup-integrity` project as a reference.
+    *   All project documentation (`README.md` and Memory Bank files) was updated to reflect this focused approach.
+*   **Outcome:**
+    *   The project now includes a simple installer for global command-line access, with the immediate scope focused on delivering a robust, manually-triggered script.
+    *   The plan for an automation feature is preserved for future evaluation.
+*   **Relevant Files/Links:**
+    *   `install.sh`
+    *   `README.md`
+    *   `memory-bank/project-brief.md`
+
+)*   **Date:** 2025-07-13
+*   **Author(s):** Benjamin Pequet
+*   **Type:** Task
+*   **Summary:** Kicked off the project by systematically populating all Memory Bank files and drafting the `README.md`.
+*   **Details:**
+    *   Studied user requirements from files in the `inbox/` directory.
+    *   Synthesized the project's purpose, scope, and technical requirements.
+    *   Drafted a new `README.md` based on the provided information.
+    *   Sequentially updated all files in the `memory-bank/` directory (`project-brief.md`, `product-context.md`, `tech-context.md`, `system-patterns.md`, `development-status.md`, `active-context.md`, `project-journey.md`) to replace boilerplate text with project-specific details.
+*   **Outcome:**
+    *   The project's foundational documentation and context are now complete.
+    *   The project is ready for the core script development to begin.
+*   **Relevant Files/Links:**
+    *   `README.md`
+    *   `memory-bank/`
+    *   `inbox/2025-07-12_2008-Automate-Submodule-Commit-Workflow.md`
+    *   `inbox/2025-07-13_0422-script-directory-logic-addendum.md`
 
 *   **Date:** 2025-06-20
 *   **Author(s):** System
