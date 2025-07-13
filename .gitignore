@@ -1,0 +1,76 @@
+# macOS
+.DS_Store
+Thumbs.db
+.AppleDouble
+.LSOverride
+
+# Thumbnails
+._*
+
+# Files that might appear in the root of a volume
+.Spotlight-V100
+.Trashes
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+
+# Environments
+.env*
+.venv
+env/
+venv/
+ENV/
+VENV/
+
+# IDE specific (including symlinks)
+# Should be commented out i.e. included in the boilerplate but **usually not** in the project
+# .cursor
+# .vscode
+# .cursor/
+# .vscode/
+
+# Build artifacts
+dist/
+build/
+*.o
+*.a
+*.so
+
+# Log files
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*~
+*.swp
+*.swo
+
+# Exclude inbox and archive directories (including symlinks)
+# Should be commented out i.e. included in the boilerplate but **usually not** in the project
+# **/inbox
+# **/inbox/**
+# **/archive
+# **/archive/**
+# **/archives
+# **/archives/**
+# **/archived
+# **/archived/**
+# **/trash
+# **/trash/**
+
+# repomix temp files
+.repomix*
+
+# Development context (including symlinks)
+.specstory
+.specstory/
+
+# Memory Bank 
+# Should be commented out i.e. included in the boilerplate but **usually not** in the project
+# memory-bank/
