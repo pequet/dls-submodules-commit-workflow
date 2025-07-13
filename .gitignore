@@ -28,11 +28,10 @@ ENV/
 VENV/
 
 # IDE specific (including symlinks)
-# Should be commented out i.e. included in the boilerplate but **usually not** in the project
-# .cursor
-# .vscode
-# .cursor/
-# .vscode/
+.cursor
+.vscode
+.cursor/
+.vscode/
 
 # Build artifacts
 dist/
@@ -52,17 +51,16 @@ logs/
 *.swo
 
 # Exclude inbox and archive directories (including symlinks)
-# Should be commented out i.e. included in the boilerplate but **usually not** in the project
-# **/inbox
-# **/inbox/**
-# **/archive
-# **/archive/**
-# **/archives
-# **/archives/**
-# **/archived
-# **/archived/**
-# **/trash
-# **/trash/**
+**/inbox
+**/inbox/**
+**/archive
+**/archive/**
+**/archives
+**/archives/**
+**/archived
+**/archived/**
+**/trash
+**/trash/**
 
 # repomix temp files
 .repomix*
