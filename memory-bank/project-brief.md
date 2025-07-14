@@ -22,7 +22,9 @@ summary: "Core project goals, requirements, and scope for the DLS Submodules Com
 *   **Requirement 2:** Iterate through every submodule within the parent repository.
 *   **Requirement 3:** For each submodule, check for pending changes and, if found, add and commit them with a consistent message.
 *   **Requirement 4:** After processing all submodules, add and commit any changes in the main repository, including the updated submodule pointers.
-*   **Requirement 5:** Provide an optional `--push` flag to push all committed changes (submodules and parent) to the remote.
+*   **Requirement 5:** Provide an optional `-p` flag with two modes:
+    *   `-p`: Pushes committed changes in the parent repository only.
+    *   `-p all`: Pushes committed changes in all submodules first, then pushes the parent repository.
 *   **Requirement 6:** Include a simple installer script (`install.sh`) to make the main script globally executable via a symlink.
 
 *   **Future Consideration:**
@@ -39,7 +41,7 @@ Developers and teams who use Git submodules to manage complex projects and need 
 *   A single, executable Bash script (`dls-commit-all.sh`).
 *   A simple, interactive installer script (`install.sh`) to handle global installation (symlinking).
 *   Functionality to commit changes in submodules and the parent repository.
-*   Optional push functionality.
+*   Optional push functionality for the parent repository (`-p`) and all repositories (`-p all`).
 *   Robust error handling to prevent commits if a proper Git repository is not found.
 *   Comprehensive `README.md` documentation.
 
