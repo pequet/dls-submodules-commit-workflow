@@ -31,6 +31,24 @@ Maintain this as a running history of the project. Add entries for any significa
 
 (## Log Entries
 
+*   **Date:** 2025-07-14
+*   **Author(s):** Benjamin Pequet
+*   **Type:** Task
+*   **Summary:** Implemented a major new feature to automatically generate commit messages using AI.
+*   **Details:**
+    *   Added a new `-a` or `--ai-commit` flag to `dls-commit-all.sh`.
+    *   When this flag is used, the script calls `vibe-tools` to generate a conventional commit message based on the `git diff` output for each repository (submodule or parent) that has changes.
+    *   This feature is configurable via a new `scripts/vibe.config` file, which specifies the AI provider, model, and a sleep duration to prevent rate-limiting.
+    *   The script now has new dependencies: `vibe-tools` for the AI functionality and `flock` for concurrency control to prevent multiple instances from running at the same time.
+    *   The commit message format was also updated to include a timestamp.
+*   **Outcome:**
+    *   The script is now significantly more powerful, further reducing the manual effort in the commit process.
+    *   The project documentation now needs to be updated to reflect these new capabilities before proceeding with further testing and the installer development.
+*   **Relevant Files/Links:**
+    *   `scripts/dls-commit-all.sh`
+    *   `scripts/vibe.config`
+    *   `README.md`
+
 *   **Date:** 2025-07-13
 *   **Author(s):** Benjamin Pequet
 *   **Type:** Milestone

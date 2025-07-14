@@ -25,7 +25,9 @@ summary: "Documents the architecture, key design decisions, and system patterns 
     *   **Rationale:** This is the canonical and most efficient Git command for performing an operation on every registered submodule, ensuring none are missed.
 *   **Decision 4:** Use `git diff-index --quiet HEAD --` to check for changes.
     *   **Rationale:** This is a safe and performant way to check for pending changes in a submodule without producing unnecessary output, allowing the script to cleanly report which submodules have nothing to commit.
-*   **Decision 5:** Make pushing an optional flag (`--push`).
+*   **Decision 5:** Integrate AI for commit message generation.
+    *   **Rationale:** To further reduce developer friction and save time by automating the creation of conventional commit messages. This elevates the script from a simple automation tool to an intelligent assistant. It uses `vibe-tools` for easy integration with various AI providers.
+*   **Decision 6:** Make pushing an optional flag (`--push`).
     *   **Rationale:** Committing and pushing are distinct operations. The default behavior should be non-destructive to the remote. This gives the user a chance to review local commits before pushing them, adhering to a safer workflow.
 
 ## 3. Design Patterns in Use
@@ -45,6 +47,8 @@ summary: "Documents the architecture, key design decisions, and system patterns 
 ## 6. Integration Points with External Systems
 *   **System 1:** Git
     *   The script is entirely dependent on the `git` command-line tool being present on the system. It integrates tightly with Git to read repository state and perform commit and push operations.
+*   **System 2:** `vibe-tools`
+    *   The script integrates with the `vibe-tools` CLI to provide AI-powered commit message generation. This introduces a dependency on this tool and its configuration for the AI features to work.
 
 ---
 **How to Use This File Effectively:**

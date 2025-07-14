@@ -22,10 +22,11 @@ summary: "Core project goals, requirements, and scope for the DLS Submodules Com
 *   **Requirement 2:** Iterate through every submodule within the parent repository.
 *   **Requirement 3:** For each submodule, check for pending changes and, if found, add and commit them with a consistent message.
 *   **Requirement 4:** After processing all submodules, add and commit any changes in the main repository, including the updated submodule pointers.
-*   **Requirement 5:** Provide an optional `-p` flag with two modes:
+*   **Requirement 5:** Provide an option for automatically generating conventional commit messages using an AI tool (`-a` or `--ai-commit`).
+*   **Requirement 6:** Provide an optional `-p` flag with two modes:
     *   `-p`: Pushes committed changes in the parent repository only.
     *   `-p all`: Pushes committed changes in all submodules first, then pushes the parent repository.
-*   **Requirement 6:** Include a simple installer script (`install.sh`) to make the main script globally executable via a symlink.
+*   **Requirement 7:** Include a simple installer script (`install.sh`) to make the main script globally executable via a symlink.
 
 *   **Future Consideration:**
     *   The installer could be enhanced to provide an option to set up a `launchd` agent for periodic, automated execution. This requires further evaluation to avoid potential conflicts in multi-user or multi-location workflows.
@@ -41,8 +42,10 @@ Developers and teams who use Git submodules to manage complex projects and need 
 *   A single, executable Bash script (`dls-commit-all.sh`).
 *   A simple, interactive installer script (`install.sh`) to handle global installation (symlinking).
 *   Functionality to commit changes in submodules and the parent repository.
+*   Support for default, user-provided (`-m`), and AI-generated (`-a`) commit messages.
 *   Optional push functionality for the parent repository (`-p`) and all repositories (`-p all`).
 *   Robust error handling to prevent commits if a proper Git repository is not found.
+*   Concurrency locking to prevent multiple script instances from running at once.
 *   Comprehensive `README.md` documentation.
 
 ### Out of Scope:
@@ -74,9 +77,12 @@ Developers and teams who use Git submodules to manage complex projects and need 
 
 *   **Constraints:**
     *   The script is dependent on the `git` command-line tool being installed and available in the system's PATH.
+    *   The script requires `flock` for concurrency control.
+    *   The AI feature requires `vibe-tools` to be installed and configured with a valid API key.
     *   It is designed only for Bash environments.
 *   **Risks:**
     *   If the logic for finding the top-level repository is not robust, the script could perform Git operations in the wrong directory. (Mitigation: Use reliable git commands like `git rev-parse --show-superproject-working-tree` and `git rev-parse --show-toplevel`, and exit with an error if a valid root cannot be determined).
+    *   AI API calls could fail or be rate-limited, affecting the commit message generation. (Mitigation: The script includes a fallback to a default message and a sleep interval to reduce the chance of rate-limiting).
     *   A very large number of submodules could potentially slow down the script's execution. (Mitigation: The `git submodule foreach` command is generally efficient, but performance should be kept in mind).
 
 ## 8. Stakeholders

@@ -24,8 +24,9 @@ summary: "Defines the problem of manual submodule commits, the proposed scripted
     *   Automatic top-level repository detection.
     *   Iterative committing of all submodules with pending changes.
     *   Final commit in the parent repository to sync submodule pointers.
+    *   Optional, AI-powered conventional commit message generation (`--ai-commit`).
+    *   Default and custom user-provided commit messages (`-m "message"`).
     *   An optional `--push` flag for a complete "commit and push" workflow in one command.
-    *   Default and customizable commit messages.
 
 ## 3. How It Should Work (User Experience Goals)
 
@@ -40,10 +41,10 @@ summary: "Defines the problem of manual submodule commits, the proposed scripted
 ## 4. Unique Selling Proposition (USP)
 
 *   **What makes this different or better than existing solutions?**
-    *   While many developers have personal scripts for this, this project provides a well-documented, robust, and distributable solution with intelligent root-finding logic that makes it safer and more portable than typical ad-hoc scripts.
+    *   While many developers have personal scripts for this, this project provides a well-documented, robust, and distributable solution. Its intelligent root-finding logic makes it safer than typical ad-hoc scripts, and its integrated AI commit message generation makes it significantly more powerful and convenient.
 
 *   **Core value proposition for the user?**
-    *   Save time and reduce mental overhead on every commit cycle, while increasing the reliability and consistency of the project's version history.
+    *   Save time and reduce mental overhead on every commit cycle—not just for staging and committing, but for writing the commit messages themselves—while increasing the reliability and consistency of the project's version history.
 
 ## 5. Assumptions About Users
 
@@ -51,6 +52,7 @@ summary: "Defines the problem of manual submodule commits, the proposed scripted
     *   Users are comfortable with the command line.
     *   Users are working in a Unix-like environment (macOS, Linux, WSL) where Bash is available.
     *   Users have Git installed and configured.
+    *   For AI features, users have `vibe-tools` installed and configured.
     *   Users are motivated to streamline their development workflow and reduce repetitive tasks.
 
 ## 6. Success Metrics (Product-Focused)

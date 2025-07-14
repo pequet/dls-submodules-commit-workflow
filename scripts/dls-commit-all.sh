@@ -496,16 +496,12 @@ run_commit_workflow() {
 main() {
     (
         if ! flock -n 200; then
-            # Use a pre-existing utility for the error message
-            source_dir="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-            source "${source_dir}/utils/messaging_utils.sh"
+            # The messaging utils are already sourced globally,
+            # so we can use print_error directly.
             print_error "Another instance of dls-commit-all.sh is already running."
             exit 1
         fi
         
-        # General dependencies checked first
-        source_dir="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-        source "${source_dir}/utils/messaging_utils.sh"
         check_dependencies
         
         run_commit_workflow "$@"

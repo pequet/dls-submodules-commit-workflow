@@ -3,19 +3,21 @@ type: overview
 domain: system-state
 subject: DLS Commit Workflow
 status: active
-summary: "The core script has been developed and corrected based on user feedback to align with all documented requirements. Documentation has been updated for consistency."
+summary: "The core script has been enhanced with a major new feature for AI-powered commit messages. The current focus is on updating all project documentation to reflect this new capability."
 ---
 # Active Context
 
 ## Current Focus
-With the core `dls-commit-all.sh` script now complete and aligned with requirements, the focus shifts to testing and deployment.
+The immediate priority is to systematically review and update all project documentation (`README.md`, Memory Bank files) to accurately describe the new AI-powered commit message generation feature and its implications for usage, setup, and the overall system design.
 
 ## Recent Changes
-*   The `dls-commit-all.sh` script was corrected to properly handle optional commit messages, restoring the required default behavior.
-*   The `README.md` was updated to provide accurate usage examples that match the script's implemented flags.
-*   The project development log and journey have been updated to reflect the completion of the core script.
+*   A major feature (`-a`, `--ai-commit`) was added to `dls-commit-all.sh` to generate conventional commit messages automatically using `vibe-tools`.
+*   The script now depends on a `scripts/vibe.config` file for AI provider and model configuration.
+*   The script now includes concurrency locking via `flock` to prevent multiple instances from running simultaneously.
+*   The `README.md` has been updated to reflect these new features and usage patterns.
 
 ## Next Steps
 
-*   **Test Continuously:** Manually test the script against a test repository with submodules to ensure each piece of functionality works as expected.
-*   **Implement Installer:** Develop the `install.sh` script to provide a simple, global installation method.
+*   **Update Documentation:** Systematically update all Memory Bank files to bring them into alignment with the script's final feature set.
+*   **Test New Feature:** Manually test the AI commit generation in a test repository to ensure it works as expected.
+*   **Implement Installer:** Resume development of the `install.sh` script to provide a simple, global installation method.

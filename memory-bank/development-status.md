@@ -3,22 +3,26 @@ type: overview
 domain: system-state
 subject: DLS Commit Workflow
 status: active
-summary: "Project status at kickoff: requirements defined, documentation drafted, ready for script development."
+summary: "The script is feature-complete, including a new AI-powered commit message capability. The immediate next step is to update all documentation to reflect the final feature set."
 ---
 # Development Status
 
 ## Overall Status
-The project is at the kickoff stage. The initial requirements have been gathered from user requests, and the foundational documentation, including the `README.md` and the Memory Bank files, has been populated. The project is now ready for the core development of the script to begin.
+The core script, `dls-commit-all.sh`, is feature-complete. It includes the initially planned functionality for committing submodules and the parent repository, as well as a significant enhancement that allows for AI-generated commit messages. The project has now pivoted from feature development to documentation and stabilization.
 
 ## What Works
-*   The project structure is set up.
-*   The core problem, solution, and requirements have been clearly defined and documented in the Memory Bank.
-*   A draft of the `README.md` file is complete.
+*   The script correctly finds the repository root.
+*   It iterates through all submodules and the parent repository, checking for changes.
+*   It can commit changes using a default, a user-provided (`-m`), or an AI-generated (`-a`) commit message.
+*   The AI feature (`--ai-commit`) uses `vibe-tools` to generate conventional commit messages.
+*   Push functionality (`-p` and `-p all`) is implemented.
+*   Concurrency control using `flock` prevents multiple instances from running.
+*   Logging to `scripts/logs/commit-all.log` is functional.
 
 ## What's Left
-*   **Core Development:** Write the `dls-commit-all.sh` Bash script, implementing all the required logic (root-finding, submodule iteration, committing, and optional push).
-*   **Testing:** Create a test environment (a Git repository with submodules) to manually test the script's functionality and edge cases.
-*   **Refinement:** Refine the script and documentation based on testing and feedback.
+*   **Documentation:** Finalize updates for all Memory Bank files to ensure they are consistent with the script's features.
+*   **Testing:** Thoroughly test the new AI commit functionality in a dedicated test environment.
+*   **Installer:** Complete the development of the `install.sh` script for global installation.
 
 ## Issues
-*   No known issues at this time. The primary challenge will be ensuring the root-finding logic is robust across different operating systems and repository structures.
+*   No known bugs. The primary risk is ensuring users have the new dependencies (`vibe-tools`, `flock`) installed and configured correctly.

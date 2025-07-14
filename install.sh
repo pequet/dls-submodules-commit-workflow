@@ -10,40 +10,21 @@ set -o pipefail
 # Project: https://github.com/pequet/dls-submodules-commit-workflow/
 # Refer to main project for detailed docs.
 
-# --- Helper Functions for printing messages ---
-print_header() {
-    echo "================================================="
-    echo " $1"
-    echo "================================================="
-}
+# --- Source Utilities ---
+# Resolve the true directory of this install script to find project files
+INSTALL_SCRIPT_DIR="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+source "${INSTALL_SCRIPT_DIR}/scripts/utils/logging_utils.sh"
+source "${INSTALL_SCRIPT_DIR}/scripts/utils/messaging_utils.sh"
 
-print_step() {
-    echo "--> $1"
-}
-
-print_success() {
-    echo "✔ $1"
-}
-
-print_error() {
-    echo "✖ $1" >&2
-}
-
-print_info() {
-    echo "  $1"
-}
-
-print_separator() {
-    echo "-------------------------------------------------"
-}
+# Set a log file path for the installer
+LOG_FILE_PATH="${INSTALL_SCRIPT_DIR}/logs/install.log"
 
 # --- Main Installation Logic ---
 main() {
+    ensure_log_directory
     print_header "DLS Submodules Commit Workflow Installer"
 
     # --- Define Paths ---
-    local INSTALL_SCRIPT_DIR
-    INSTALL_SCRIPT_DIR="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
     local SOURCE_SCRIPT_NAME="dls-commit-all.sh"
     local DEST_DIR="/usr/local/bin"
     local DEST_PATH="${DEST_DIR}/${SOURCE_SCRIPT_NAME}"
@@ -55,6 +36,7 @@ main() {
         print_error "Source script not found at ${SOURCE_SCRIPT_PATH}"
         exit 1
     fi
+    print_success "Source script found."
 
     # --- Step 2: Verify destination directory ---
     print_step "Step 2: Verifying destination directory"
@@ -63,6 +45,7 @@ main() {
         print_info "Please ensure standard Homebrew/macOS paths are configured."
         exit 1
     fi
+    print_success "Destination directory found."
 
     # --- Step 3: Install the main script ---
     print_step "Step 3: Installing the main script"
@@ -75,11 +58,11 @@ main() {
     fi
 
     print_separator
-    print_success "Success!"
+    print_completed "Installation Complete"
     print_info "The '${SOURCE_SCRIPT_NAME}' command is now installed."
     print_info "You can now run it from any directory."
-    print_info "Example: dls-commit-all.sh \"Your commit message\""
-
+    print_info "Example: dls-commit-all.sh -a -p all"
+    print_footer
 }
 
 # --- Script Entrypoint ---
