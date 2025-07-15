@@ -6,10 +6,14 @@ set -u
 set -o pipefail
 
 # Messaging Utilities
-# Version: 1.0.0
+# Version: 1.1.0
 # Author: Benjamin Pequet
 # Projects: https://github.com/pequet/ 
 # Purpose: Provides terminal messaging utility functions.
+
+# Changelog:
+# 1.1.0: Added a new function `prompt_user_input` to prompt the user for input with a default value.
+# 1.0.0: Initial release.
 
 # --- Guard against direct execution ---
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
@@ -103,5 +107,27 @@ print_status_line() {
         log_message "ERROR" "Action '${action}' on '${subject}' resulted in: ${result}"
     else
         log_message "INFO" "Action '${action}' on '${subject}' resulted in: ${result}"
+    fi
+} 
+
+# Prompts the user for input with a default value.
+# The user's input is returned via stdout.
+# The calling script is expected to have already displayed the default value.
+# Usage:
+#   user_response=$(prompt_user_input "Enter new value, or press Enter to accept default" "$default_value")
+prompt_user_input() {
+    local prompt_message="$1"
+    local default_value="$2"
+    local user_input
+
+    # We avoid `read -i` for better portability (e.g., on macOS default bash).
+    # The -e flag enables readline for a better editing experience.
+    read -e -p "${prompt_message}: " user_input
+    
+    # If user_input is empty (user just pressed Enter), return the original default_value.
+    if [[ -z "$user_input" ]]; then
+        echo "$default_value"
+    else
+        echo "$user_input"
     fi
 } 

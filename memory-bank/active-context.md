@@ -3,14 +3,16 @@ type: overview
 domain: system-state
 subject: DLS Commit Workflow
 status: active
-summary: "The script and documentation are feature-complete and have been tested. The project is ready for its initial public release."
+summary: "A new feature for a smarter sleep mechanism is being added before the initial public release."
 ---
 # Active Context
 
 ## Current Focus
-The project is feature-complete, tested, and all documentation has been updated. The immediate priority is to perform a final review and then publish the repository publicly on GitHub.
+A new feature for a smarter, dynamic sleep mechanism is the next priority. Once this is implemented and tested, the project will be ready for its initial public release.
 
 ## Recent Changes
+*   **New Feature Idea:** A feature for a smarter sleep mechanism to account for user interaction time has been proposed and logged.
+*   **Interactive Commits:** An `-i` or `--interactive` flag was added to allow for confirmation or overriding of AI-generated commit messages.
 *   A major feature (`-a`, `--ai-commit`) was added to `dls-commit-all.sh` to generate conventional commit messages automatically using `vibe-tools`.
 *   The script now depends on a `scripts/vibe.config` file for AI provider and model configuration.
 *   The script now includes concurrency locking via `flock` to prevent multiple instances from running simultaneously.
@@ -19,4 +21,6 @@ The project is feature-complete, tested, and all documentation has been updated.
 
 ## Next Steps
 
+*   **Implement Smarter Sleep:** Add the dynamic sleep calculation to the `dls-commit-all.sh` script.
+*   **Testing:** Test the new sleep mechanism thoroughly.
 *   **Public Release:** Perform a final review and publish the project on GitHub.

@@ -18,11 +18,12 @@ The core of this repository is the `scripts/dls-commit-all.sh` script.
 4.  **Commits Submodule Changes**: If changes are found, it automatically stages all of them (`git add .`) and commits them using a provided or default commit message.
 5.  **Commits Parent Repository**: After all submodules are processed, it creates a final commit in the parent repository, which updates the submodule pointers to their new state.
 6.  **AI-Generated Commit Messages**: Includes an optional `-a` or `--ai-commit` flag to automatically generate a conventional commit message for each repository with changes using `vibe-tools`. This feature requires `vibe-tools` to be installed and configured.
-7.  **Custom Commit Messages**: Includes an optional `-m "message"` flag to specify a custom commit message. This is ignored if the `--ai-commit` flag is used.
-8.  **Optional Push**: It includes a `-p` flag with two modes:
+7.  **Interactive AI Commits**: When using the `-a` flag, you can also add the `-i` or `--interactive` flag. This will prompt you to confirm or edit each AI-generated commit message before it is committed.
+8.  **Custom Commit Messages**: Includes an optional `-m "message"` flag to specify a custom commit message. This is ignored if the `--ai-commit` flag is used.
+9.  **Optional Push**: It includes a `-p` flag with two modes:
     *   `-p`: Pushes changes in the **parent repository only**.
     *   `-p all`: Pushes changes in all submodules first, then the parent repository.
-9.  **Directory Path**: It accepts an optional `DIRECTORY` path to specify which repository to operate on.
+10. **Directory Path**: It accepts an optional `DIRECTORY` path to specify which repository to operate on.
 
 ### Usage
 
@@ -32,8 +33,11 @@ Once installed, you can run the `dls-commit-all.sh` command from any directory w
 # Automatically generate commit messages with AI (no push)
 dls-commit-all.sh -a
 
-# Automatically generate commit messages with AI and push only the parent repository to remote
+# Use AI-generated messages and push the parent repository only
 dls-commit-all.sh -a -p
+
+# Automatically generate commit messages with AI and push all changes
+dls-commit-all.sh -a -i -p all
 
 # Commit all changes of a remote repository with a custom message (no push)
 dls-commit-all.sh /path/to/my/project -m "My daily update"

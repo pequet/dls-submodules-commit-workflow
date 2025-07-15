@@ -26,6 +26,8 @@ set -o pipefail
 #   -a, --ai-commit (Optional) Automatically generate the commit message for
 #                 each repository/submodule with changes using AI. If this
 #                 flag is present, the -m flag is ignored.
+#   -i, --interactive (Optional) When used with -a, prompts the user to
+#                 confirm or override the AI-generated commit message.
 #   -p [all]      (Optional) Push changes.
 #                 -p: Push the parent repository only.
 #                 -p all: Push submodules, then the parent.
@@ -45,6 +47,7 @@ set -o pipefail
 COMMIT_MESSAGE_SUFFIX_TEMPLATE="[dls-commit-all]"
 
 # --- Global Variables ---
+INTERACTIVE_MODE=false
 # Resolve the true script directory, following symlinks
 SOURCE="${BASH_SOURCE[0]}"
 while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
@@ -112,6 +115,7 @@ usage() {
     echo "Options:"
     echo "  -m \"message\"    (Optional) The commit message to use. Defaults to 'CHORE: Automatic commit [dls-commit-all]'."
     echo "  -a, --ai-commit   (Optional) Automatically generate commit messages using AI. Overrides -m."
+    echo "  -i, --interactive (Optional) With -a, prompt to confirm/override AI-generated messages."
     echo "  -p [all]          (Optional) Push changes to the remote."
     echo "                    'all': Pushes submodules first, then the parent."
     echo "                    (default): Pushes parent repository only."
@@ -149,6 +153,7 @@ commit_submodules() {
     local flag_file=$2
     local ai_commit=$3
     local ai_call_flag_file=$4
+    local interactive_mode=$5
     print_step "Checking submodules for changes"
     
     export commit_message
@@ -159,7 +164,8 @@ commit_submodules() {
     export PROVIDER MODEL SLEEP_DURATION # Export AI config for subshell
     export COMMIT_SUFFIX
     export ai_call_flag_file
-    export -f log_message print_info print_success print_warning
+    export interactive_mode # Export interactive flag
+    export -f log_message print_info print_success print_warning prompt_user_input
 
     git submodule foreach '
         # We need to re-source utils because `git submodule foreach`
@@ -202,6 +208,12 @@ commit_submodules() {
                         final_commit_message="CHORE: Automatic commit"
                     else
                         print_info "AI-generated message for $name: \"$final_commit_message\""
+                        
+                        if [ "$interactive_mode" = true ]; then
+                            prompt="Enter new message to override, or press Enter to accept"
+                            final_commit_message=$(prompt_user_input "$prompt" "$final_commit_message")
+                            print_info "Using message: \"$final_commit_message\""
+                        fi
                     fi
                 fi
 
@@ -225,6 +237,7 @@ commit_parent_repo() {
     local commit_message=$1
     local ai_commit=$2
     local ai_call_flag_file=$3
+    local interactive_mode=$4
     print_info "Checking parent repository for changes"
     
     if [ -n "$(git status --porcelain)" ]; then
@@ -265,6 +278,11 @@ commit_parent_repo() {
                     final_commit_message="CHORE: Automatic commit"
                 else
                     print_info "AI-generated message for parent: \"$final_commit_message\""
+                    if [ "$interactive_mode" = true ]; then
+                        prompt="Enter new message to override, or press Enter to accept"
+                        final_commit_message=$(prompt_user_input "$prompt" "$final_commit_message")
+                        print_info "Using message: \"$final_commit_message\""
+                    fi
                 fi
             fi
 
@@ -342,6 +360,10 @@ run_commit_workflow() {
                 ;;
             -a|--ai-commit)
                 ai_commit=true
+                shift
+                ;;
+            -i|--interactive)
+                INTERACTIVE_MODE=true
                 shift
                 ;;
             -p)
@@ -431,7 +453,7 @@ run_commit_workflow() {
         [[ -n "${ai_call_flag_file:-}" ]] && rm -f -- "$ai_call_flag_file"
     ' EXIT
 
-    commit_submodules "$commit_message" "$submodule_flag_file" "$ai_commit" "$ai_call_flag_file"
+    commit_submodules "$commit_message" "$submodule_flag_file" "$ai_commit" "$ai_call_flag_file" "$INTERACTIVE_MODE"
     
     # Read the names of committed submodules from the flag file into an array
     if [ -s "$submodule_flag_file" ]; then
@@ -440,7 +462,7 @@ run_commit_workflow() {
         done < "$submodule_flag_file"
     fi
 
-    if commit_parent_repo "$commit_message" "$ai_commit" "$ai_call_flag_file"; then
+    if commit_parent_repo "$commit_message" "$ai_commit" "$ai_call_flag_file" "$INTERACTIVE_MODE"; then
         parent_committed=true
     fi
     

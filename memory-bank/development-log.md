@@ -31,6 +31,35 @@ Maintain this as a running history of the project. Add entries for any significa
 
 (## Log Entries
 
+*   **Date:** 2025-07-15
+*   **Author(s):** Benjamin Pequet
+*   **Type:** Idea
+*   **Summary:** Captured a new feature idea for a smarter, dynamic sleep mechanism.
+*   **Details:**
+    *   The user proposed improving the sleep logic to account for time spent in blocking operations, such as the new interactive prompt.
+    *   The new logic will calculate the time elapsed during an operation and subtract it from the required `SLEEP_DURATION`, only sleeping for the remainder. This will make the script more efficient.
+*   **Outcome:**
+    *   The idea has been logged in the `inbox/` directory and this development log.
+    *   This feature is now the next implementation priority.
+*   **Relevant Files/Links:**
+    *   `inbox/2025-07-15_1524-smarter-sleep-mechanism.md`
+    *   `scripts/dls-commit-all.sh`
+
+*   **Date:** 2025-07-15
+*   **Author(s):** Benjamin Pequet
+*   **Type:** Idea
+*   **Summary:** Captured a new feature idea for an interactive commit message prompt.
+*   **Details:**
+    *   The user proposed adding an optional `--interactive` flag to `dls-commit-all.sh`.
+    *   When enabled, this flag will prompt the user to accept or override the AI-generated commit message for each repository.
+    *   This allows for manual review and adjustment of commit messages while preserving the non-interactive default for automation.
+*   **Outcome:**
+    *   The idea has been logged in the `inbox/` directory and this development log.
+    *   The next step is to analyze the existing script and then implement this new feature.
+*   **Relevant Files/Links:**
+    *   `inbox/2025-07-15_1508-interactive-commit-prompt.md`
+    *   `scripts/dls-commit-all.sh`
+
 *   **Date:** 2025-07-14
 *   **Author(s):** Benjamin Pequet
 *   **Type:** Task
