@@ -7,11 +7,11 @@
     "fileProvider": "openai",
     "fileModel": "o3-mini",
     "thinkingProvider": "gemini",
-    "thinkingModel": "gemini-2.0-flash"
+    "thinkingModel": "gemini-2.5-pro"
   },
   "repo": {
     "provider": "gemini",
-    "model": "gemini-2.0-flash"
+    "model": "gemini-2.5-pro"
   },
   "doc": {
     "provider": "perplexity",
