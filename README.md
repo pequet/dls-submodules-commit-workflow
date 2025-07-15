@@ -6,7 +6,7 @@ This repository contains a script to automate the commit workflow for a parent r
 
 In projects with numerous submodules (public and private), the process of committing changes is cumbersome and error-prone. It requires manually navigating into each submodule, staging and committing changes, and then finally committing the parent repository to update the submodule pointers. This script was created to solve that friction.
 
-## The Script: `dls-commit-all.sh`
+## The Script
 
 The core of this repository is the `scripts/dls-commit-all.sh` script.
 
@@ -29,26 +29,17 @@ The core of this repository is the `scripts/dls-commit-all.sh` script.
 Once installed, you can run the `dls-commit-all.sh` command from any directory within your Git repository.
 
 ```bash
-# Commit all changes with the default message (no push)
-dls-commit-all.sh
-
 # Automatically generate commit messages with AI (no push)
 dls-commit-all.sh -a
 
-# Commit all changes with the default message and push only the parent repository to remote
-dls-commit-all.sh -p
+# Automatically generate commit messages with AI and push only the parent repository to remote
+dls-commit-all.sh -a -p
 
-# Commit all changes with a custom message (no push)
+# Commit all changes of a remote repository with a custom message (no push)
 dls-commit-all.sh /path/to/my/project -m "My daily update"
-
-# Commit and push ONLY the parent repository
-dls-commit-all.sh -m "My daily update" -p
 
 # Commit and push EVERYTHING (submodules and parent)
 dls-commit-all.sh -m "My daily update" -p all
-
-# Generate messages with AI and push EVERYTHING
-dls-commit-all.sh -a -p all
 ```
 
 ## Installation
@@ -64,6 +55,8 @@ An installer script is provided to make the command globally available on your s
 ```
 
 The script will ask for your administrator password to create a symbolic link in `/usr/local/bin`.
+
+**Benefit of Installation:** Once installed, the script integrates with your command line. You can type `dls-` and press the `Tab` key to see and auto-complete `dls-commit-all.sh`, along with any other `dls-` scripts you have installed. (Note: You may need to open a new terminal or run `rehash` for the command to become available in your current session).
 
 ## License
 

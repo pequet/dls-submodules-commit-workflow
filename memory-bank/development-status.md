@@ -3,12 +3,12 @@ type: overview
 domain: system-state
 subject: DLS Commit Workflow
 status: active
-summary: "The script is feature-complete, including a new AI-powered commit message capability. The immediate next step is to update all documentation to reflect the final feature set."
+summary: "The script is feature-complete, tested, and ready for public release. No further development is planned before the initial publication."
 ---
 # Development Status
 
 ## Overall Status
-The core script, `dls-commit-all.sh`, is feature-complete. It includes the initially planned functionality for committing submodules and the parent repository, as well as a significant enhancement that allows for AI-generated commit messages. The project has now pivoted from feature development to documentation and stabilization.
+The core script, `dls-commit-all.sh`, and its installer are feature-complete, documented, and have been tested. The project is stable and ready for its initial public release.
 
 ## What Works
 *   The script correctly finds the repository root.
@@ -18,11 +18,10 @@ The core script, `dls-commit-all.sh`, is feature-complete. It includes the initi
 *   Push functionality (`-p` and `-p all`) is implemented.
 *   Concurrency control using `flock` prevents multiple instances from running.
 *   Logging to `scripts/logs/commit-all.log` is functional.
+*   The `install.sh` script correctly installs the command for global use.
 
 ## What's Left
-*   **Documentation:** Finalize updates for all Memory Bank files to ensure they are consistent with the script's features.
-*   **Testing:** Thoroughly test the new AI commit functionality in a dedicated test environment.
-*   **Installer:** Complete the development of the `install.sh` script for global installation.
+*   **Public Release:** The project needs to be published on GitHub.
 
 ## Issues
-*   No known bugs. The primary risk is ensuring users have the new dependencies (`vibe-tools`, `flock`) installed and configured correctly.
+*   No known bugs. The primary user consideration is ensuring dependencies (`git`, `flock`, `vibe-tools`) are installed and that they are aware of potential AI API costs.

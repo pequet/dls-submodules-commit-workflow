@@ -23,17 +23,17 @@ To eliminate the friction and potential for human error in managing complex proj
 - [x] M06: **Implement Core Script Logic:** Write the first complete, testable version of the `dls-commit-all.sh` script, including root-finding, submodule looping, and commit logic.
 - [x] M07: **Implement AI Commit Message Generation**: Add the `-a` flag and integrate `vibe-tools` to automatically generate commit messages.
 - [x] M08: **Implement Optional Push Flag:** Add and test the `-p` functionality.
-- [ ] M09: **Develop Installer Script:** Create `install.sh` to handle global installation.
+- [x] M09: **Develop Installer Script:** Create `install.sh` to handle global installation.
 
 **Phase 3: Refinement & Testing**
-- [ ] M10: **Create Test Plan:** Define a clear manual testing plan for the core script and installer.
-- [ ] M11: **Perform Initial Integration Testing:** Execute the installer and then test the script against the test repository.
-- [ ] M12: **Document Core Systems:** Finalize the `README.md` with installation and usage instructions.
+- [x] M10: **Create Test Plan:** Define a clear manual testing plan for the core script and installer.
+- [x] M11: **Perform Initial Integration Testing:** Execute the installer and then test the script against the test repository.
+- [x] M12: **Document Core Systems:** Finalize the `README.md` with installation and usage instructions.
 - [ ] M13: **Perform First Code Refactor Pass:** Review the script and installer for clarity, efficiency, and adherence to shell scripting best practices.
 
 **Phase 4: Release & Iteration**
 - [ ] M14: **First Public Commit / Release Candidate:** The first version is ready for public view or testing.
-- [ ] M15: **README & Public Documentation Ready:** The project's public-facing documentation is complete.
+- [x] M15: **README & Public Documentation Ready:** The project's public-facing documentation is complete.
 - [ ] M16: **Project Published/Deployed:** The project is live and accessible on GitHub.
 - [ ] M17: **[Address Post-Release Feedback/Bugs]**
 - [ ] M18: **[Define Next Major Milestone or Feature]**
@@ -41,9 +41,9 @@ To eliminate the friction and potential for human error in managing complex proj
 ## Active Quests & Challenges
 *   [x] Q1: Write the initial version of the `dls-commit-all.sh` script.
 *   [x] Q2: Implement AI-powered commit message generation.
-*   [ ] Q3: Create a separate Git repository with a few test submodules to serve as a consistent testbed for the script.
-*   [ ] Q4: Test the `install.sh` script on a clean setup.
-*   [ ] Q5: Update all project documentation to reflect the final feature set.
+*   [x] Q3: Create a separate Git repository with a few test submodules to serve as a consistent testbed for the script.
+*   [x] Q4: Test the `install.sh` script on a clean setup.
+*   [x] Q5: Update all project documentation to reflect the final feature set.
 *   [ ] Q6: Evaluate the risks and benefits of adding automated, periodic execution via a `launchd` agent.
 
 ## Session Goals Integration (Conceptual Link)

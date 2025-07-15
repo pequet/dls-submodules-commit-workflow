@@ -1,6 +1,6 @@
 DLS Submodules Commit Workflow
 ========================================================================
-Operating in repository: /Users/cavgchagstuejncm/Library/Mobile Documents/iCloud~md~obsidian/Documents/TRI
+Operating in repository: /Users/[username]/Library/Mobile Documents/iCloud~md~obsidian/Documents/[main-repo-name]
 - Checking submodules for changes
 Entering 'Projects/Curiosities Cabinet/Views/Public Repositories/Stentor/stentor-01'
 WARN: No changes to commit in submodule Projects/Curiosities Cabinet/Views/Public Repositories/Stentor/stentor-01.
@@ -8,6 +8,32 @@ Entering 'Projects/Digital Life Security/Views/Public Repositories/Backup Integr
 WARN: No changes to commit in submodule Projects/Digital Life Security/Views/Public Repositories/Backup Integrity/dls-icloud-backup-integrity.
 Entering 'Projects/Digital Life Security/Views/Public Repositories/Commit Workflow/dls-submodules-commit-workflow'
 Submodule Projects/Digital Life Security/Views/Public Repositories/Commit Workflow/dls-submodules-commit-workflow has changes.
-Querying AI (gemini/gemini-2.5-flash) for a commit message 🤖
+Querying AI (gemini/gemini-2.5-flash) for a commit message 🤖🧠
 AI-generated message for Projects/Digital Life Security/Views/Public Repositories/Commit Workflow/dls-submodules-commit-workflow: "CHORE: Remove outdated project checklist and update config."
 - Committing changes in submodule Projects/Digital Life Security/Views/Public Repositories/Commit Workflow/dls-submodules-commit-workflow
+SUCCESS: Committed changes in submodule Projects/Digital Life Security/Views/Public Repositories/Commit Workflow/dls-submodules-commit-workflow
+Entering 'Projects/Digital Life Security/Views/Public Repositories/Password Backup/dls-password-backup'
+WARN: No changes to commit in submodule Projects/Digital Life Security/Views/Public Repositories/Password Backup/dls-password-backup.
+Entering 'Projects/Digital Life Security/Views/Public Repositories/Sync Drives/dls-sync-drives'
+WARN: No changes to commit in submodule Projects/Digital Life Security/Views/Public Repositories/Sync Drives/dls-sync-drives.
+Entering 'Projects/Seed/Views/Public Repositories/Public Repository Templates/cursor-project-boilerplate'
+WARN: No changes to commit in submodule Projects/Seed/Views/Public Repositories/Cursor Project Boilerplate/cursor-project-boilerplate.
+Entering 'Projects/Video Split Merge/Views/Public Repositories/Duo-Vision Suite/duo-vision-recomposer'
+WARN: No changes to commit in submodule Projects/Video Split Merge/Views/Public Repositories/duo-vision-recomposer.
+Checking parent repository for changes
+Parent repo has changes.
+- Sleeping for 10 seconds to avoid rate limiting...
+Querying AI (gemini/gemini-2.5-flash) for a commit message 🤖🧠
+AI-generated message for parent: "CHORE: Update documentation."
+- Committing changes in the parent repository
+SUCCESS: Committed changes in the parent repository.
+- Pushing changes in parent repository only
+SUCCESS: Parent repository pushed successfully.
+========================================================================
+🏁 Commit workflow complete.
+Commit Summary:
+  - Commit Mode:           AI-Generated
+  - Committed Submodules:  Projects/Digital Life Security/Views/Public Repositories/Commit Workflow/dls-submodules-commit-workflow
+  - Parent Repo Committed: Yes
+  - Push Action:           Pushed parent repository only.
+========================================================================

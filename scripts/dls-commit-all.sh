@@ -181,7 +181,7 @@ commit_submodules() {
                     touch "$ai_call_flag_file"
                 fi
 
-                print_info "Querying AI ($PROVIDER/$MODEL) for a commit message 🤖"
+                print_info "Querying AI ($PROVIDER/$MODEL) for a commit message 🤖🧠"
 
                 DIFF_CONTENT=$(git diff HEAD --stat)
                 
@@ -242,7 +242,7 @@ commit_parent_repo() {
                 touch "$ai_call_flag_file"
             fi
 
-            print_info "Querying AI ($PROVIDER/$MODEL) for a commit message 🤖"
+            print_info "Querying AI ($PROVIDER/$MODEL) for a commit message 🤖🧠"
 
             DIFF_CONTENT=$(git diff HEAD --stat)
             

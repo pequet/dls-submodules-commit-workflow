@@ -95,7 +95,7 @@ Commit Workflow/                                # Grouping
 │   ├── .cursor -> ../private/.cursor/
 │   ├── .specstory -> ../private/.specstory/
 │   ├── inbox -> ../private/inbox/
-│   ├── memory-bank -> ../private/memory-bank/
+│   ├── memory-bank/
 │   ├── archives/
 │   ├── docs/
 │   ├── scripts/
@@ -103,8 +103,7 @@ Commit Workflow/                                # Grouping
 └── private/                                    # Assets tracked by the parent framework
     ├── .cursor/
     ├── .specstory/
-    ├── inbox/
-    └── memory-bank/
+    └── inbox/
 ```
 
 This organization allows for a clean public repository while maintaining a rich, private context for development, and the ability to switch between the two contexts seamlessly.
@@ -115,4 +114,4 @@ This layered structure enables a powerful and organized development workflow gui
 
 -   **Inbox-Driven Development:** All new ideas, notes, tasks, and raw information related to this project are first captured in the parent `Models/0. Inbox/` and then moved to the public repository `dls-submodules-commit-workflow/inbox/`. This keeps the public repository clean while ensuring no idea is lost.
 -   **Archival Over Deletion:** Following a "never delete" principle, files are moved to the `dls-submodules-commit-workflow/archives/` or back to the parent `Models/4. Archives/` instead of being deleted. This preserves a complete history of the project's evolution.
--   **Private Asset Management:** The sibling `private/` directory stores development artifacts (`.cursor/`, `.specstory/`, `inbox/`, `memory-bank/`) that are essential for development and should be versioned in the private parent repository, but are not part of the public-facing submodule. 
+-   **Private Asset Management:** The sibling `private/` directory stores development artifacts (`.cursor/`, `.specstory/`, `inbox/`) that are essential for development and should be versioned in the private parent repository, but are not part of the public-facing submodule. 
