@@ -52,15 +52,15 @@ logs/
 
 # Exclude inbox and archive directories (including symlinks)
 **/inbox
-**/inbox/**
+**/inbox/
 **/archive
-**/archive/**
+**/archive/
 **/archives
-**/archives/**
+**/archives/
 **/archived
-**/archived/**
+**/archived/
 **/trash
-**/trash/**
+**/trash/
 
 # repomix temp files
 .repomix*
