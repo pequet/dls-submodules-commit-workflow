@@ -29,7 +29,20 @@ Maintain this as a running history of the project. Add entries for any significa
 
 ---
 
-(## Log Entries
+## Log Entries
+
+*   **Date:** [[2025-07-21]]
+*   **Author(s):** Benjamin Pequet
+*   **Type:** Task
+*   **Summary:** Enhanced the script to robustly handle nested Git submodules by implementing the --recursive flag and a two-pass commit process.
+*   **Details:**
+    *   Identified that the `git submodule foreach --recursive` command did not guarantee a bottom-up commit order, leaving parent submodules with uncommitted pointer updates.
+    *   The script was updated to perform a second, non-recursive pass after the initial commit loop. This finalization step specifically commits any pending submodule pointer updates.
+    *   This change resolves the "modified content" errors that were occurring with nested structures and makes the script's handling of complex repositories much more reliable.
+*   **Outcome:**
+    *   The `dls-commit-all.sh` script now fully supports committing changes in repositories with arbitrarily deep nested submodules, making it a much more powerful and resilient tool.
+*   **Relevant Files/Links:**
+    *   `scripts/dls-commit-all.sh`
 
 *   **Date:** 2025-07-15
 *   **Author(s):** Benjamin Pequet

@@ -44,7 +44,8 @@ To eliminate the friction and potential for human error in managing complex proj
 *   [x] Q3: Create a separate Git repository with a few test submodules to serve as a consistent testbed for the script.
 *   [x] Q4: Test the `install.sh` script on a clean setup.
 *   [x] Q5: Update all project documentation to reflect the final feature set.
-*   [ ] Q6: Evaluate the risks and benefits of adding automated, periodic execution via a `launchd` agent.
+*   [x] Q6: **Resolve Nested Submodule Handling:** Enhance the script to reliably commit changes in repositories with nested submodules.
+*   [ ] Q7: Evaluate the risks and benefits of adding automated, periodic execution via a `launchd` agent.
 
 ## Session Goals Integration (Conceptual Link)
 *   Session-specific goals are typically set in `memory-bank/active-context.md`.

@@ -13,6 +13,7 @@ The core script, `dls-commit-all.sh`, and its installer are feature-complete, do
 ## What Works
 *   The script correctly finds the repository root.
 *   It iterates through all submodules and the parent repository, checking for changes.
+*   The script now robustly handles repositories with **nested submodules**, committing changes from the inside out to prevent pointer update errors.
 *   It can commit changes using a default, a user-provided (`-m`), or an AI-generated (`-a`) commit message.
 *   The AI feature (`--ai-commit`) uses `vibe-tools` to generate conventional commit messages.
 *   Push functionality (`-p` and `-p all`) is implemented.

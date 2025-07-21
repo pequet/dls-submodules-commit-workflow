@@ -13,17 +13,18 @@ The core of this repository is the `scripts/dls-commit-all.sh` script.
 ### How it Works
 
 1.  **Finds Project Root**: The script intelligently traverses up from the current directory to find the top-level parent repository, ensuring it doesn't accidentally run on a submodule.
-2.  **Iterates Through Submodules**: It uses `git submodule foreach` to execute commands within every submodule directory.
-3.  **Checks for Changes**: For each submodule, it safely checks if there are any staged or unstaged changes.
-4.  **Commits Submodule Changes**: If changes are found, it automatically stages all of them (`git add .`) and commits them using a provided or default commit message.
-5.  **Commits Parent Repository**: After all submodules are processed, it creates a final commit in the parent repository, which updates the submodule pointers to their new state.
-6.  **AI-Generated Commit Messages**: Includes an optional `-a` or `--ai-commit` flag to automatically generate a conventional commit message for each repository with changes using `vibe-tools`. This feature requires `vibe-tools` to be installed and configured.
-7.  **Interactive AI Commits**: When using the `-a` flag, you can also add the `-i` or `--interactive` flag. This will prompt you to confirm or edit each AI-generated commit message before it is committed.
-8.  **Custom Commit Messages**: Includes an optional `-m "message"` flag to specify a custom commit message. This is ignored if the `--ai-commit` flag is used.
-9.  **Optional Push**: It includes a `-p` flag with two modes:
+2.  **Iterates Through Submodules**: It uses `git submodule foreach --recursive` to execute commands within every submodule directory.
+3.  **Handles Nested Submodules**: The script uses a two-pass system to reliably commit changes from the innermost submodule outwards, correctly handling the pointer updates in parent submodules.
+4.  **Checks for Changes**: For each submodule, it safely checks if there are any staged or unstaged changes.
+5.  **Commits Submodule Changes**: If changes are found, it automatically stages all of them (`git add .`) and commits them using a provided or default commit message.
+6.  **Commits Parent Repository**: After all submodules are processed, it creates a final commit in the parent repository, which updates the submodule pointers to their new state.
+7.  **AI-Generated Commit Messages**: Includes an optional `-a` or `--ai-commit` flag to automatically generate a conventional commit message for each repository with changes using `vibe-tools`. This feature requires `vibe-tools` to be installed and configured.
+8.  **Interactive AI Commits**: When using the `-a` flag, you can also add the `-i` or `--interactive` flag. This will prompt you to confirm or edit each AI-generated commit message before it is committed.
+9.  **Custom Commit Messages**: Includes an optional `-m "message"` flag to specify a custom commit message. This is ignored if the `--ai-commit` flag is used.
+10. **Optional Push**: It includes a `-p` flag with two modes:
     *   `-p`: Pushes changes in the **parent repository only**.
     *   `-p all`: Pushes changes in all submodules first, then the parent repository.
-10. **Directory Path**: It accepts an optional `DIRECTORY` path to specify which repository to operate on.
+11. **Directory Path**: It accepts an optional `DIRECTORY` path to specify which repository to operate on.
 
 ### Usage
 

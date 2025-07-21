@@ -19,7 +19,7 @@ summary: "Core project goals, requirements, and scope for the DLS Submodules Com
 ## 2. Core Requirements & Functionality
 
 *   **Requirement 1:** Intelligently locate the top-level repository root, traversing up from the current directory.
-*   **Requirement 2:** Iterate through every submodule within the parent repository.
+*   **Requirement 2:** Iterate through every submodule within the parent repository, including nested submodules in the correct bottom-up order.
 *   **Requirement 3:** For each submodule, check for pending changes and, if found, add and commit them with a consistent message.
 *   **Requirement 4:** After processing all submodules, add and commit any changes in the main repository, including the updated submodule pointers.
 *   **Requirement 5:** Provide an option for automatically generating conventional commit messages using an AI tool (`-a` or `--ai-commit`).
