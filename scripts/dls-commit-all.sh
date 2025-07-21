@@ -233,6 +233,31 @@ commit_submodules() {
     '
 }
 
+commit_submodule_pointers() {
+    local flag_file=$1
+    print_step "Checking for submodule pointer updates"
+    
+    export LOG_FILE_PATH # Export for sub-shells
+    export SCRIPT_DIR # Export SCRIPT_DIR for sub-shells
+    export flag_file # Export the flag file path
+    export COMMIT_SUFFIX
+    export -f log_message print_info print_success print_warning
+
+    git submodule foreach '
+        # We need to re-source utils because `git submodule foreach`
+        # may not inherit all shell function contexts reliably.
+        source "${SCRIPT_DIR}/utils/logging_utils.sh"
+
+        if [ -n "$(git status --porcelain)" ]; then
+            print_step "Committing submodule pointer updates in $name"
+            git add .
+            git commit -m "CHORE: Update submodule pointers ${COMMIT_SUFFIX}" --quiet
+            print_success "Committed submodule pointer updates in $name"
+            echo "$name" >> "$flag_file" # Save the name of the committed submodule
+        fi
+    '
+}
+
 commit_parent_repo() {
     local commit_message=$1
     local ai_commit=$2
@@ -454,6 +479,9 @@ run_commit_workflow() {
     ' EXIT
 
     commit_submodules "$commit_message" "$submodule_flag_file" "$ai_commit" "$ai_call_flag_file" "$INTERACTIVE_MODE"
+    
+    # Second pass: commit any submodule pointer updates created by the first pass
+    commit_submodule_pointers "$submodule_flag_file"
     
     # Read the names of committed submodules from the flag file into an array
     if [ -s "$submodule_flag_file" ]; then
