@@ -167,7 +167,7 @@ commit_submodules() {
     export interactive_mode # Export interactive flag
     export -f log_message print_info print_success print_warning prompt_user_input
 
-    git submodule foreach '
+    git submodule foreach --recursive '
         # We need to re-source utils because `git submodule foreach`
         # may not inherit all shell function contexts reliably.
         source "${SCRIPT_DIR}/utils/logging_utils.sh"
