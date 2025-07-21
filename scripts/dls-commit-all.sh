@@ -235,13 +235,14 @@ commit_submodules() {
 
 commit_submodule_pointers() {
     local flag_file=$1
-    print_step "Checking for submodule pointer updates"
     
     export LOG_FILE_PATH # Export for sub-shells
     export SCRIPT_DIR # Export SCRIPT_DIR for sub-shells
     export flag_file # Export the flag file path
     export COMMIT_SUFFIX
-    export -f log_message print_info print_success print_warning
+    export -f log_message print_step print_info print_success print_warning
+
+    print_step "Checking for submodule pointer updates"
 
     git submodule foreach '
         # We need to re-source utils because `git submodule foreach`
