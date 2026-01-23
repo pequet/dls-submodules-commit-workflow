@@ -4,6 +4,7 @@
 set -e
 set -u
 set -o pipefail
+trap 'echo "ERROR: Script failed at line $LINENO: $BASH_COMMAND" >&2' ERR
 
 # █████  DLS Commit Workflow
 # █  ██  Version: 1.0.0
@@ -167,7 +168,7 @@ commit_submodules() {
     export interactive_mode # Export interactive flag
     export -f log_message print_info print_success print_warning prompt_user_input
 
-    git submodule foreach --recursive '
+    if ! git submodule foreach --recursive '
         # We need to re-source utils because `git submodule foreach`
         # may not inherit all shell function contexts reliably.
         source "${SCRIPT_DIR}/utils/logging_utils.sh"
@@ -177,7 +178,7 @@ commit_submodules() {
             final_commit_message=""
             if [ "$ai_commit" = true ]; then
                 print_info "Submodule $name has changes."
-                
+
                 # Conditionally sleep only if this is not the first AI call
                 if [ -f "$ai_call_flag_file" ]; then
                     print_step "Sleeping for $SLEEP_DURATION seconds to avoid rate limiting..."
@@ -190,10 +191,10 @@ commit_submodules() {
                 print_info "Querying AI ($PROVIDER/$MODEL) for a commit message 🤖🧠"
 
                 DIFF_CONTENT=$(git diff HEAD --stat)
-                
+
                 ai_error_file=$(mktemp)
                 ai_output_file=$(mktemp)
-                
+
                 # The `if` statement allows us to check the exit code without `set -e` terminating the script.
                 if ! vibe-tools ask "Generate a concise, conventional commit message starting with CHORE: for the following git diff: \`\`\`diff\n${DIFF_CONTENT}\n\`\`\`" --provider "$PROVIDER" --model "$MODEL" > "$ai_output_file" 2> "$ai_error_file"; then
                     print_warning "AI message generation failed for submodule $name."
@@ -208,7 +209,7 @@ commit_submodules() {
                         final_commit_message="CHORE: Automatic commit"
                     else
                         print_info "AI-generated message for $name: \"$final_commit_message\""
-                        
+
                         if [ "$interactive_mode" = true ]; then
                             prompt="Enter new message to override, or press Enter to accept"
                             final_commit_message=$(prompt_user_input "$prompt" "$final_commit_message")
@@ -221,16 +222,19 @@ commit_submodules() {
             else
                 final_commit_message="$commit_message"
             fi
-            
+
             print_step "Committing changes in submodule $name"
-            git add .
+            git add -u
             git commit -m "${final_commit_message} ${COMMIT_SUFFIX}" --quiet
             print_success "Committed changes in submodule $name"
             echo "$name" >> "$flag_file" # Save the name of the committed submodule
         else
             print_warning "No changes to commit in submodule $name."
         fi
-    '
+    '; then
+        print_error "Failed while processing submodules. The last 'Entering ...' line above indicates which submodule failed."
+        exit 1
+    fi
 }
 
 commit_submodule_pointers() {
@@ -244,19 +248,22 @@ commit_submodule_pointers() {
 
     print_step "Checking for submodule pointer updates"
 
-    git submodule foreach '
+    if ! git submodule foreach '
         # We need to re-source utils because `git submodule foreach`
         # may not inherit all shell function contexts reliably.
         source "${SCRIPT_DIR}/utils/logging_utils.sh"
 
         if [ -n "$(git status --porcelain)" ]; then
             print_step "Committing submodule pointer updates in $name"
-            git add .
+            git add -u
             git commit -m "CHORE: Update submodule pointers ${COMMIT_SUFFIX}" --quiet
             print_success "Committed submodule pointer updates in $name"
             echo "$name" >> "$flag_file" # Save the name of the committed submodule
         fi
-    '
+    '; then
+        print_error "Failed while checking submodule pointers. The last 'Entering ...' line above indicates which submodule failed."
+        exit 1
+    fi
 }
 
 commit_parent_repo() {
@@ -318,7 +325,7 @@ commit_parent_repo() {
         fi
 
         print_step "Committing changes in the parent repository"
-        git add .
+        git add -u
         git commit -m "${final_commit_message} ${COMMIT_SUFFIX}" --quiet
         print_success "Committed changes in the parent repository."
         return 0 # Indicate a commit was made
