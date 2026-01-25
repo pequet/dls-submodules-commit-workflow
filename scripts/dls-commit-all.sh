@@ -7,7 +7,7 @@ set -o pipefail
 trap 'echo "ERROR: Script failed at line $LINENO: $BASH_COMMAND" >&2' ERR
 
 # █████  DLS Commit Workflow
-# █  ██  Version: 1.0.0
+# █  ██  Version: 1.0.1
 # █ ███  Author: Benjamin Pequet
 # █████  GitHub: https://github.com/pequet/dls-submodules-commit-workflow/
 #
@@ -38,6 +38,7 @@ trap 'echo "ERROR: Script failed at line $LINENO: $BASH_COMMAND" >&2' ERR
 #   - git
 #
 # Changelog:
+#   1.0.1 - 2026-01-25 - Add ERR trap and per-submodule error handling for better diagnostics.
 #   1.0.0 - 2025-07-13 - Initial release.
 #
 # Support the Project:
@@ -224,7 +225,11 @@ commit_submodules() {
             fi
 
             print_step "Committing changes in submodule $name"
-            git add -u
+            # CRITICAL: Use 'git add .' NOT 'git add -u'!
+            # 'git add -u' only stages tracked files - if files become untracked
+            # (iCloud sync issues, index corruption), they are treated as DELETIONS.
+            # This caused catastrophic data loss on 2026-01-25.
+            git add .
             git commit -m "${final_commit_message} ${COMMIT_SUFFIX}" --quiet
             print_success "Committed changes in submodule $name"
             echo "$name" >> "$flag_file" # Save the name of the committed submodule
@@ -255,7 +260,8 @@ commit_submodule_pointers() {
 
         if [ -n "$(git status --porcelain)" ]; then
             print_step "Committing submodule pointer updates in $name"
-            git add -u
+            # CRITICAL: Use 'git add .' NOT 'git add -u'! See comment in commit_submodules().
+            git add .
             git commit -m "CHORE: Update submodule pointers ${COMMIT_SUFFIX}" --quiet
             print_success "Committed submodule pointer updates in $name"
             echo "$name" >> "$flag_file" # Save the name of the committed submodule
@@ -325,7 +331,8 @@ commit_parent_repo() {
         fi
 
         print_step "Committing changes in the parent repository"
-        git add -u
+        # CRITICAL: Use 'git add .' NOT 'git add -u'! See comment in commit_submodules().
+        git add .
         git commit -m "${final_commit_message} ${COMMIT_SUFFIX}" --quiet
         print_success "Committed changes in the parent repository."
         return 0 # Indicate a commit was made
