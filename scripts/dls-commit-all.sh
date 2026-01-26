@@ -253,21 +253,6 @@ commit_submodules() {
     ' 2>&1 | grep -v -e "^fatal: run_command" -e "^\.$"; then
         exit 1
     fi
-
-    # Show summary of skipped submodules
-    if [ -s "$skipped_submodules_file" ]; then
-        echo ""
-        print_warning "========================================="
-        print_warning "SKIPPED SUBMODULES (iCloud placeholders)"
-        print_warning "========================================="
-        while IFS= read -r submodule_name; do
-            print_warning "  ✗ $submodule_name"
-        done < "$skipped_submodules_file"
-        print_warning ""
-        print_warning "These submodules were not committed."
-        print_warning "Fix: Run 'brctl download .' in each submodule directory"
-        echo ""
-    fi
 }
 
 commit_submodule_pointers() {
@@ -581,6 +566,25 @@ run_commit_workflow() {
     fi
 
     print_separator
+
+    # Show summary of ALL skipped submodules (from both commit and pointer operations)
+    if [ -s "$skipped_submodules_file" ]; then
+        echo ""
+        print_warning "========================================"
+        print_warning "SKIPPED SUBMODULES (iCloud placeholders)"
+        print_warning "========================================"
+
+        # Use sort -u to deduplicate (a submodule could be skipped in both operations)
+        sort -u "$skipped_submodules_file" | while IFS= read -r submodule_name; do
+            print_warning "  ✗ $submodule_name"
+        done
+
+        print_warning ""
+        print_warning "These submodules were not committed due to iCloud placeholders."
+        print_warning "Fix: Run 'brctl download .' in each submodule directory, then re-run this script."
+        echo ""
+    fi
+
     print_completed "Commit workflow complete."
 
     local push_action_desc="No push was performed."
