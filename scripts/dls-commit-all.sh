@@ -7,7 +7,7 @@ set -o pipefail
 trap 'echo "ERROR: Script failed at line $LINENO: $BASH_COMMAND" >&2' ERR
 
 # █████  DLS Commit Workflow
-# █  ██  Version: 1.0.1
+# █  ██  Version: 1.0.2
 # █ ███  Author: Benjamin Pequet
 # █████  GitHub: https://github.com/pequet/dls-submodules-commit-workflow/
 #
@@ -38,6 +38,7 @@ trap 'echo "ERROR: Script failed at line $LINENO: $BASH_COMMAND" >&2' ERR
 #   - git
 #
 # Changelog:
+#   1.0.2 - 2026-01-26 - CRITICAL: Add iCloud placeholder detection before all commits.
 #   1.0.1 - 2026-01-25 - Add ERR trap and per-submodule error handling for better diagnostics.
 #   1.0.0 - 2025-07-13 - Initial release.
 #
@@ -175,7 +176,19 @@ commit_submodules() {
         source "${SCRIPT_DIR}/utils/logging_utils.sh"
         source "${SCRIPT_DIR}/utils/messaging_utils.sh"
 
-        if [ -n "$(git status --porcelain)" ]; then
+        if [ -n "$(git status --porcelain 2>/dev/null)" ]; then
+            # SAFETY CHECK: Skip this submodule if ANY iCloud placeholders detected
+            for filepath in $(git status --porcelain 2>/dev/null | grep "^ M" | cut -c4-); do
+                if [ -f "$filepath" ]; then
+                    file_type=$(file "$filepath" 2>/dev/null || echo "")
+                    if echo "$file_type" | grep -q "empty"; then
+                        print_warning "Skipping $name: iCloud placeholder detected ($filepath)"
+                        echo "$name" >> "$skipped_submodules_file"
+                        exit 0
+                    fi
+                fi
+            done
+
             final_commit_message=""
             if [ "$ai_commit" = true ]; then
                 print_info "Submodule $name has changes."
@@ -225,10 +238,11 @@ commit_submodules() {
             fi
 
             print_step "Committing changes in submodule $name"
-            # CRITICAL: Use 'git add .' NOT 'git add -u'!
-            # 'git add -u' only stages tracked files - if files become untracked
+            # CRITICAL: Do NOT use git add -u here!
+            # git add -u only stages tracked files - if files become untracked
             # (iCloud sync issues, index corruption), they are treated as DELETIONS.
             # This caused catastrophic data loss on 2026-01-25.
+
             git add .
             git commit -m "${final_commit_message} ${COMMIT_SUFFIX}" --quiet
             print_success "Committed changes in submodule $name"
@@ -236,15 +250,29 @@ commit_submodules() {
         else
             print_warning "No changes to commit in submodule $name."
         fi
-    '; then
-        print_error "Failed while processing submodules. The last 'Entering ...' line above indicates which submodule failed."
+    ' 2>&1 | grep -v -e "^fatal: run_command" -e "^\.$"; then
         exit 1
+    fi
+
+    # Show summary of skipped submodules
+    if [ -s "$skipped_submodules_file" ]; then
+        echo ""
+        print_warning "========================================="
+        print_warning "SKIPPED SUBMODULES (iCloud placeholders)"
+        print_warning "========================================="
+        while IFS= read -r submodule_name; do
+            print_warning "  ✗ $submodule_name"
+        done < "$skipped_submodules_file"
+        print_warning ""
+        print_warning "These submodules were not committed."
+        print_warning "Fix: Run 'brctl download .' in each submodule directory"
+        echo ""
     fi
 }
 
 commit_submodule_pointers() {
     local flag_file=$1
-    
+
     export LOG_FILE_PATH # Export for sub-shells
     export SCRIPT_DIR # Export SCRIPT_DIR for sub-shells
     export flag_file # Export the flag file path
@@ -258,18 +286,31 @@ commit_submodule_pointers() {
         # may not inherit all shell function contexts reliably.
         source "${SCRIPT_DIR}/utils/logging_utils.sh"
 
-        if [ -n "$(git status --porcelain)" ]; then
+        if [ -n "$(git status --porcelain 2>/dev/null)" ]; then
+            # SAFETY CHECK: Skip this submodule if ANY iCloud placeholders detected
+            for filepath in $(git status --porcelain 2>/dev/null | grep "^ M" | cut -c4-); do
+                if [ -f "$filepath" ]; then
+                    file_type=$(file "$filepath" 2>/dev/null || echo "")
+                    if echo "$file_type" | grep -q "empty"; then
+                        print_warning "Skipping $name pointer update: iCloud placeholder detected ($filepath)"
+                        echo "$name" >> "$skipped_submodules_file"
+                        exit 0
+                    fi
+                fi
+            done
+
             print_step "Committing submodule pointer updates in $name"
-            # CRITICAL: Use 'git add .' NOT 'git add -u'! See comment in commit_submodules().
+            # CRITICAL: Do NOT use git add -u here! See comment in commit_submodules().
+
             git add .
             git commit -m "CHORE: Update submodule pointers ${COMMIT_SUFFIX}" --quiet
             print_success "Committed submodule pointer updates in $name"
             echo "$name" >> "$flag_file" # Save the name of the committed submodule
         fi
-    '; then
-        print_error "Failed while checking submodule pointers. The last 'Entering ...' line above indicates which submodule failed."
+    ' 2>&1 | grep -v -e "^fatal: run_command" -e "^\.$"; then
         exit 1
     fi
+
 }
 
 commit_parent_repo() {
@@ -278,8 +319,20 @@ commit_parent_repo() {
     local ai_call_flag_file=$3
     local interactive_mode=$4
     print_info "Checking parent repository for changes"
-    
-    if [ -n "$(git status --porcelain)" ]; then
+
+    if [ -n "$(git status --porcelain 2>/dev/null)" ]; then
+        # SAFETY CHECK: Abort IMMEDIATELY if ANY iCloud placeholders detected
+        for filepath in $(git status --porcelain 2>/dev/null | grep "^ M" | cut -c4-); do
+            if [ -f "$filepath" ]; then
+                file_type=$(file "$filepath" 2>/dev/null || echo "")
+                if echo "$file_type" | grep -q "empty"; then
+                    print_error "SAFETY ABORT: iCloud placeholder detected in parent repo: $filepath"
+                    print_error "Cannot commit - data loss risk. Files must be downloaded from iCloud first."
+                    exit 1
+                fi
+            fi
+        done
+
         final_commit_message=""
         if [ "$ai_commit" = true ]; then
 
@@ -331,7 +384,8 @@ commit_parent_repo() {
         fi
 
         print_step "Committing changes in the parent repository"
-        # CRITICAL: Use 'git add .' NOT 'git add -u'! See comment in commit_submodules().
+        # CRITICAL: Do NOT use git add -u here! See comment in commit_submodules().
+
         git add .
         git commit -m "${final_commit_message} ${COMMIT_SUFFIX}" --quiet
         print_success "Committed changes in the parent repository."
@@ -346,8 +400,8 @@ push_changes() {
     print_step "Pushing all changes to the remote"
 
     print_step "Step 1: Pushing changes in submodules"
-    if ! git submodule foreach 'git push --quiet' >&2; then
-        print_error "Failed to push one or more submodules. Please check the output above."
+    if ! git submodule foreach 'git push --quiet' 2>&1 | grep -v -e "^fatal: run_command" -e "^\.$" >&2; then
+        print_error "Failed to push one or more submodules."
         print_warning "Aborting parent repository push to prevent inconsistent state."
         exit 1
     fi
@@ -485,11 +539,17 @@ run_commit_workflow() {
     
     cd "$repo_root"
     print_info "Operating in repository: $repo_root"
-    
+
     submodule_flag_file=$(mktemp)
+    # Global file to track all skipped submodules across all operations
+    local skipped_submodules_file
+    skipped_submodules_file=$(mktemp)
+    export skipped_submodules_file
+
     # Ensure temp files are cleaned up on exit. Handles cases where they might not be created.
     trap '
         [[ -n "${submodule_flag_file:-}" ]] && rm -f -- "$submodule_flag_file"
+        [[ -n "${skipped_submodules_file:-}" ]] && rm -f -- "$skipped_submodules_file"
         [[ -n "${ai_call_flag_file:-}" ]] && rm -f -- "$ai_call_flag_file"
     ' EXIT
 
@@ -555,7 +615,12 @@ run_commit_workflow() {
     print_info "  - Parent Repo Committed: ${parent_committed_desc}"
     print_info "  - Push Action:           ${push_action_desc}"
 
-    print_footer 
+    print_footer
+
+    # Exit with error if any submodules were skipped
+    if [ -s "$skipped_submodules_file" ]; then
+        exit 1
+    fi 
 }
 
 main() {
