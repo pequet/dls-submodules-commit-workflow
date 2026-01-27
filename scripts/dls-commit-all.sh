@@ -257,8 +257,6 @@ commit_submodules() {
 
             print_success "Committed changes in submodule $name"
             echo "$name" >> "$flag_file" # Save the name of the committed submodule
-        else
-            print_warning "No changes to commit in submodule $name."
         fi
     ' 2>&1 | grep -v -e "^fatal: run_command" -e "^\.$"; then
         exit 1
@@ -357,7 +355,7 @@ commit_parent_repo() {
             print_info "Querying AI ($PROVIDER/$MODEL) for a commit message 🤖🧠"
 
             DIFF_CONTENT=$(git diff HEAD --stat)
-            
+
             local ai_error_file
             ai_error_file=$(mktemp)
             local ai_output_file
@@ -406,7 +404,6 @@ commit_parent_repo() {
         print_success "Committed changes in the parent repository."
         return 0 # Indicate a commit was made
     else
-        print_warning "No changes to commit in the parent repository."
         return 1 # Indicate no commit was made
     fi
 }
