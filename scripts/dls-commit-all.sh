@@ -181,7 +181,9 @@ commit_submodules() {
             for filepath in $(git status --porcelain 2>/dev/null | grep "^ M" | cut -c4-); do
                 if [ -f "$filepath" ]; then
                     file_type=$(file "$filepath" 2>/dev/null || echo "")
-                    if echo "$file_type" | grep -q "empty"; then
+                    # Extract only the file type (after the colon) to avoid matching filenames
+                    file_type_only=$(echo "$file_type" | cut -d: -f2-)
+                    if echo "$file_type_only" | grep -q "empty"; then
                         print_warning "Skipping $name: iCloud placeholder detected ($filepath)"
                         echo "$name" >> "$skipped_submodules_file"
                         exit 0
@@ -276,7 +278,9 @@ commit_submodule_pointers() {
             for filepath in $(git status --porcelain 2>/dev/null | grep "^ M" | cut -c4-); do
                 if [ -f "$filepath" ]; then
                     file_type=$(file "$filepath" 2>/dev/null || echo "")
-                    if echo "$file_type" | grep -q "empty"; then
+                    # Extract only the file type (after the colon) to avoid matching filenames
+                    file_type_only=$(echo "$file_type" | cut -d: -f2-)
+                    if echo "$file_type_only" | grep -q "empty"; then
                         print_warning "Skipping $name pointer update: iCloud placeholder detected ($filepath)"
                         echo "$name" >> "$skipped_submodules_file"
                         exit 0
@@ -310,7 +314,9 @@ commit_parent_repo() {
         for filepath in $(git status --porcelain 2>/dev/null | grep "^ M" | cut -c4-); do
             if [ -f "$filepath" ]; then
                 file_type=$(file "$filepath" 2>/dev/null || echo "")
-                if echo "$file_type" | grep -q "empty"; then
+                # Extract only the file type (after the colon) to avoid matching filenames
+                file_type_only=$(echo "$file_type" | cut -d: -f2-)
+                if echo "$file_type_only" | grep -q "empty"; then
                     print_error "SAFETY ABORT: iCloud placeholder detected in parent repo: $filepath"
                     print_error "Cannot commit - data loss risk. Files must be downloaded from iCloud first."
                     exit 1
