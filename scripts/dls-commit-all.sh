@@ -245,8 +245,16 @@ commit_submodules() {
             # (iCloud sync issues, index corruption), they are treated as DELETIONS.
             # This caused catastrophic data loss on 2026-01-25.
 
-            git add .
-            git commit -m "${final_commit_message} ${COMMIT_SUFFIX}" --quiet
+            if ! git add . 2>&1; then
+                print_error "Failed to stage changes in submodule $name"
+                exit 1
+            fi
+
+            if ! git commit -m "${final_commit_message} ${COMMIT_SUFFIX}" --quiet 2>&1; then
+                print_error "Failed to commit changes in submodule $name"
+                exit 1
+            fi
+
             print_success "Committed changes in submodule $name"
             echo "$name" >> "$flag_file" # Save the name of the committed submodule
         else
@@ -291,8 +299,16 @@ commit_submodule_pointers() {
             print_step "Committing submodule pointer updates in $name"
             # CRITICAL: Do NOT use git add -u here! See comment in commit_submodules().
 
-            git add .
-            git commit -m "CHORE: Update submodule pointers ${COMMIT_SUFFIX}" --quiet
+            if ! git add . 2>&1; then
+                print_error "Failed to stage pointer updates in $name"
+                exit 1
+            fi
+
+            if ! git commit -m "CHORE: Update submodule pointers ${COMMIT_SUFFIX}" --quiet 2>&1; then
+                print_error "Failed to commit pointer updates in $name"
+                exit 1
+            fi
+
             print_success "Committed submodule pointer updates in $name"
             echo "$name" >> "$flag_file" # Save the name of the committed submodule
         fi
@@ -377,8 +393,16 @@ commit_parent_repo() {
         print_step "Committing changes in the parent repository"
         # CRITICAL: Do NOT use git add -u here! See comment in commit_submodules().
 
-        git add .
-        git commit -m "${final_commit_message} ${COMMIT_SUFFIX}" --quiet
+        if ! git add . 2>&1; then
+            print_error "Failed to stage changes in parent repository"
+            exit 1
+        fi
+
+        if ! git commit -m "${final_commit_message} ${COMMIT_SUFFIX}" --quiet 2>&1; then
+            print_error "Failed to commit changes in parent repository"
+            exit 1
+        fi
+
         print_success "Committed changes in the parent repository."
         return 0 # Indicate a commit was made
     else
