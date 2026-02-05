@@ -151,6 +151,17 @@ find_repo_root() {
     fi
 }
 
+# Check if repository has any submodules configured
+has_submodules() {
+    if [ ! -f .gitmodules ]; then
+        return 1
+    fi
+
+    local submodule_count
+    submodule_count=$(git submodule status | wc -l | tr -d ' ')
+    [ "$submodule_count" -gt 0 ]
+}
+
 commit_submodules() {
     local commit_message=$1
     local flag_file=$2
@@ -258,7 +269,7 @@ commit_submodules() {
             print_success "Committed changes in submodule $name"
             echo "$name" >> "$flag_file" # Save the name of the committed submodule
         fi
-    ' 2>&1 | grep -v -e "^fatal: run_command" -e "^\.$"; then
+    ' 2>&1 | { grep -v -e "^fatal: run_command" -e "^\.$" || true; }; then
         exit 1
     fi
 }
@@ -310,7 +321,7 @@ commit_submodule_pointers() {
             print_success "Committed submodule pointer updates in $name"
             echo "$name" >> "$flag_file" # Save the name of the committed submodule
         fi
-    ' 2>&1 | grep -v -e "^fatal: run_command" -e "^\.$"; then
+    ' 2>&1 | { grep -v -e "^fatal: run_command" -e "^\.$" || true; }; then
         exit 1
     fi
 
@@ -565,10 +576,16 @@ run_commit_workflow() {
         [[ -n "${ai_call_flag_file:-}" ]] && rm -f -- "$ai_call_flag_file"
     ' EXIT
 
-    commit_submodules "$commit_message" "$submodule_flag_file" "$ai_commit" "$ai_call_flag_file" "$INTERACTIVE_MODE"
-    
-    # Second pass: commit any submodule pointer updates created by the first pass
-    commit_submodule_pointers "$submodule_flag_file"
+    if has_submodules; then
+        # Repository has submodules - process them
+        commit_submodules "$commit_message" "$submodule_flag_file" "$ai_commit" "$ai_call_flag_file" "$INTERACTIVE_MODE"
+
+        # Second pass: commit any submodule pointer updates created by the first pass
+        commit_submodule_pointers "$submodule_flag_file"
+    else
+        # No submodules - skip submodule processing
+        print_info "No Git submodules found - processing parent repository only"
+    fi
     
     # Read the names of committed submodules from the flag file into an array
     if [ -s "$submodule_flag_file" ]; then
